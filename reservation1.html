@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>구미푸드페스티벌 구미대 미식회관 사전 예약 폼</title>
+  <style>
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+    }
+    h2 {
+      text-align: center;
+      color: #2e7d32;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #2e7d32;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .success {
+      background-color: #e8f5e9;
+      border-left: 5px solid #66bb6a;
+      padding: 10px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>구미푸드페스티벌 구미대 미식회관 사전 예약 폼</h2>
+
+  <form id="reservationForm">
+    <label for="name">에약자명</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="phone">연락처 (예: 010-1234-5678)</label>
+    <input type="tel" id="phone" name="phone" required>
+
+    <label for="date">참여 날짜</label>
+    <select id="date" name="date" required>
+      <option value="">-- 날짜 선택 --</option>
+      <option value="7월 26일 (금)">7월 26일 (금)</option>
+      <option value="7월 27일 (토)">7월 27일 (토)</option>
+    </select>
+
+    <label for="time">참여 시간</label>
+    <select id="time" name="time" required>
+      <option value="">-- 시간 선택 --</option>
+      <option value="1부 (13:00 ~ 14:00)">1부 (13:00 ~ 14:00)</option>
+      <option value="2부 (15:00 ~ 16:00)">2부 (15:00 ~ 16:00)</option>
+      <option value="3부 (17:00 ~ 18:00)">3부 (17:00 ~ 18:00)</option>
+    </select>
+
+    <label for="people">참여 인원 수</label>
+    <select id="people" name="people" required>
+      <option value="">-- 인원 선택 (최대4인) --</option>
+      <option value="1명">1명</option>
+      <option value="2명">2명</option>
+      <option value="3명">3명</option>
+      <option value="4명">4명</option>
+    </select>
+
+    <label for="comment"> 기타 문의사항 있으시면 작성해주시기 바랍니다. </label>
+    <textarea id="comment" name="comment" rows="3" placeholder="(선택사항)"></textarea>
+
+    <button type="submit">예약하기</button>
+  </form>
+
+  <div id="successMessage" class="success" style="display:none;">
+    예약이 완료되었습니다!<br>
+    행사 당일 부스로 방문해 주세요. 감사합니다 😊<br>
+    (원할한 행사 진행을 위해 해당시간에 시식품 받아가세요)
+  </div>
+
+  <script>
+const form = document.getElementById('reservationForm');
+const successMessage = document.getElementById('successMessage');
+
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  const formData = {
+    name: document.getElementById('name').value,
+    phone: document.getElementById('phone').value,
+    date: document.getElementById('date').value,
+    time: document.getElementById('time').value,
+    people: document.getElementById('people').value,
+    comment: document.getElementById('comment').value
+  };
+
+  fetch("https://script.google.com/macros/s/AKfycbxzShyMWKq85zMc6M2gRNOEljWImygy3kWJsNSNxi579sPlT91PbvFaJokeTfpgM0Kt/exec", {
+    method: "POST",
+    body: JSON.stringify(formData),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+  .then(res => res.json())
+  .then(data => {
+    form.style.display = 'none';
+    successMessage.style.display = 'block';
+  })
+  .catch(err => {
+    alert("제출 중 오류가 발생했습니다. 다시 시도해주세요.");
+    console.error(err);
+  });
+});
+</script>
+
+</body>
+</html>
